@@ -1,0 +1,21 @@
+body{
+    width:80%;
+    display:block;
+    margin:auto !important;
+}
+
+#header{
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom:50px;
+    border-bottom: 1px solid black;   
+}
+
+#personnal_info{
+    float:right;
+}
+
+/*#imgfooter{
+    display:block;
+    margin:auto;
+}*/
