@@ -15,7 +15,14 @@ body{
     float:right;
 }
 
-/*#imgfooter{
+#logo{
     display:block;
-    margin:auto;
-}*/
+}
+
+#mainNav{
+    margin-left: 50px;
+}
+
+#mainNav li{
+    margin : 0px !important;
+}
