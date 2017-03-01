@@ -1,28 +1,135 @@
-body{
-    width:80%;
-    display:block;
-    margin:auto !important;
+body {
+    width: 80%;
+    display: block;
+    margin: auto !important;
 }
 
-#header{
+
+/*Header*/
+
+#header {
     margin-right: auto;
     margin-left: auto;
-    margin-bottom:50px;
-    border-bottom: 1px solid black;   
+    margin-bottom: 50px;
+    border-bottom: 1px solid black;
 }
 
-#personnal_info{
-    float:right;
+#personnal_info {
+    float: right;
 }
 
-#logo{
-    display:block;
+#logo {
+    display: block;
 }
 
-#mainNav{
+#mainNav {
     margin-left: 50px;
 }
 
-#mainNav li{
-    margin : 0px !important;
+#mainNav li {
+    margin: 0px !important;
+}
+
+
+/*Panel shop by*/
+
+#panel_title {
+    font-weight: bold;
+}
+
+.panel_subtitle {
+    font-weight: bold;
+    color: grey;
+}
+
+
+/*Catalogue*/
+
+#header_catalogue {
+    margin: 20px;
+}
+
+.img-top-catalogue {
+    float: left;
+    display: block;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+.article {
+    width: 100px;
+}
+
+.pictures_article {
+    position: relative;
+    top: 0;
+    left: 0;
+}
+
+.img-article-catalogue {
+    position: relative;
+    top: 0;
+    left: 0;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.img-article-promo {
+    position: absolute;
+    top: 0px;
+    left: 57%;
+}
+
+.subimg-article-catalogue {}
+
+.price_catolgue {}
+
+#price_catolgue_1_2 {
+    text-decoration: line-through;
+}
+
+#price_catolgue_2_2 {
+    color: red;
+    font-size: larger;
+}
+
+
+/*FOOTER*/
+
+#footer {
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 50px;
+}
+
+.img-footer-social {
+    float: left;
+    display: block;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+.label-social {
+    padding: 10px;
+}
+
+#payment_method {
+    float: right;
+}
+
+#langage_money_selection {
+    float: right;
+    border-top: 10px;
+}
+
+#langage_money_selection a {
+    margin-right: 10px;
+    color: black;
+}
+
+#langage_money_selection a.active {
+    font-weight: bold;
 }
