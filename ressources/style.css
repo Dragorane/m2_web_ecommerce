@@ -61,26 +61,19 @@ body {
 }
 
 .pictures_article {
-    position: relative;
-    top: 0;
-    left: 0;
+    text-align:center;
 }
 
-.img-article-catalogue {
-    position: relative;
-    top: 0;
-    left: 0;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 5px;
-    margin-bottom: 10px;
-    display: block;
+.div-img-article {
+    position : relative;
+    vertical-align: middle;
+    display: inline-block;
 }
 
 .img-article-promo {
-    position: absolute;
-    top: 0px;
-    left: 57%;
+    position:absolute;
+    top:0;
+    right:0;
 }
 
 .subimg-article-catalogue {}
