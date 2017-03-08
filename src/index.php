@@ -1,22 +1,22 @@
 <?php
 //This is the route file
 session_start();
-require("controller/Catalogue.php");
-$catalogueController = new Catalogue;
+require("controller/Page.php");
+$pageController = new Page;
 
 // Routing
 if (isset ($_GET ['page'])) $page = $_GET ['page'];
 if (isset ($_GET ['action'])) $action = $_GET ['action']; else $action = "";
 		
 switch ($page) {
- 	case "shopping_cart":
- 		require("php/$page.php");
+ 	case "shoppingcart":
+ 		$pageController->shoppingCartPage();
 		break;
 	case "catalogue":
-		$catalogueController->mainPage();
+		$pageController->mainPage();
 		break;
 	default:
-		$catalogueController->mainPage();
+		$pageController->mainPage();
         break;
 }
 
