@@ -78,13 +78,13 @@ body {
 
 .subimg-article-catalogue {}
 
-.price_catolgue {}
+.price_catalogue {}
 
-#price_catolgue_1_2 {
+.price_catalogue_1 {
     text-decoration: line-through;
 }
 
-#price_catolgue_2_2 {
+.price_catalogue_2 {
     color: red;
     font-size: larger;
 }

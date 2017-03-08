@@ -13,7 +13,7 @@
   {
     "id":"2",
     "title":"Voluptatem Accusantium Doloremque",
-    "price":"20.00",
+    "price":"22.00",
     "promo":"20",
     "categorie":"Vivamus mauris",
     "sub_categorie":"Vivamus mauris semper",
@@ -23,7 +23,7 @@
   },
   {
     "id":"3",
-    "title":"Voluptatem Accusantium oloremque",
+    "title":"Voluptatem Accusantium Doloremque",
     "price":"29.00",
     "promo":"-1",
     "categorie":"Rhoncus vitae semper",
