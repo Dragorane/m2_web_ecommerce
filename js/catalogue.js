@@ -45,8 +45,8 @@ $.ajax({
             cpt = cpt + 1;
         }
         catalogue += "</div>\n";
-        document.getElementById("products_catalogue").innerHTML = catalogue;
-        document.getElementById("cpt_items").innerHTML = cpt;
+         $("#products_catalogue").html(catalogue);
+         $("#cpt_items").html(cpt);
     }
 
 });
