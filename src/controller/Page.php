@@ -44,10 +44,10 @@ class Page {
         echo "</div>";
         echo "<div class='row'>";
         echo "<div class='col-md-4'>";
-        require("view/shoppingcart/discountCouponForm.html");
+        require("view/shoppingcart/estimateShippingForm.html");
         echo "</div>";
         echo "<div class='col-md-4'>";
-        require("view/shoppingcart/estimateShippingForm.html");
+        require("view/shoppingcart/discountCouponForm.html");
         echo "</div>";
         echo "<div class='col-md-4'>";
         require("view/shoppingcart/orderTotalForm.html");

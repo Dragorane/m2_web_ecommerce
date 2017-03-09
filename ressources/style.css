@@ -61,19 +61,19 @@ body {
 }
 
 .pictures_article {
-    text-align:center;
+    text-align: center;
 }
 
 .div-img-article {
-    position : relative;
+    position: relative;
     vertical-align: middle;
     display: inline-block;
 }
 
 .img-article-promo {
-    position:absolute;
-    top:0;
-    right:0;
+    position: absolute;
+    top: 0;
+    right: 0;
 }
 
 .subimg-article-catalogue {}
@@ -125,4 +125,42 @@ body {
 
 #langage_money_selection a.active {
     font-weight: bold;
+}
+
+
+/* Shopping cart form*/
+
+.formRequireLabel {
+    color: red;
+}
+
+.orderLeftForm {
+    float: left;
+    display: inline-block !important;
+    vertical-align: middle !important;
+    line-height: normal !important;
+}
+
+.orderRightForm {
+    float: right;
+}
+
+.scFormTitle {
+    border: 1px solid grey;
+    padding-left: 5%;
+    margin-bottom: 10px;
+    color: grey;
+}
+
+.scFormValidation {
+    margin-top: 10px;
+}
+
+label {
+    font-style: normal !important;
+}
+
+#grandTotal {
+    font-size: xx-large;
+    font-weight: bolder;
 }
