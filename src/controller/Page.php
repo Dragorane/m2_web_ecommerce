@@ -15,10 +15,10 @@ class Page {
         echo "<h1>Design</h1>";
         echo "</div>";
         echo "<div class='row'>";
-        echo "<div class='col-md-3'>";
+        echo "<div class='col-md-2'>";
         require("view/border_left.html");
         echo "</div>";
-        echo "<div class='col-md-9'>";
+        echo "<div class='col-md-10'>";
         require("view/catalogue.html");
         echo "</div>";
         echo "</div>";

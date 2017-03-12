@@ -6,34 +6,73 @@ $.ajax({
         var $data = json; //content of our json products
         var cpt = 0; //counting our articles
         var catalogue = "<div class='row'>\n"; //catalogue : html
-        var arrayCategories = new Array();
-        var htmlCategories = "";
+        var arrayCategories = {}; //array to stock categorie
+        var htmlCategories = ""; //var to stock html code for categorie
+        var arrayBrand = {};
+        var htmlBrand = "";
+        var arrayColor = {};
+        var htmlColor = "";
         for (let article of $data) {
             catalogue = buildCatalogue(catalogue, article, cpt);
-            arrayCategories = buildCategories(arrayCategories, article["categorie"]);
+            arrayCategories = buildKV(arrayCategories, article["categorie"]);
+            arrayBrand = buildKV(arrayBrand, article["brand"]);
+            arrayColor = buildKV(arrayColor, article["color"]);
             cpt = cpt + 1;
         }
         catalogue += "</div>\n";
+        htmlCategories = printCategories(arrayCategories);
+        htmlBrand = printBrand(arrayBrand);
+        htmlColor = printColor(arrayColor);
         $("#products_catalogue").html(catalogue);
         $("#cpt_items").html(cpt);
-        htmlCategories=printCategories(arrayCategories);
-        $("#categoriesSelection").html(htmlcategorie):
+        $("#categoriesSelection").html(htmlCategories);
+        $("#brandSelection").html(htmlBrand);
+        $("#colorSelection").html(htmlColor);
     }
 });
 
-function buildCategories(arrayCategories, categorie) {
-    if (typeof arrayCategories[categorie] === 'undefined') {
-        arrayCategories[categorie]= 1;
+
+function buildKV(array, key) {
+    if (typeof array[key] === 'undefined') {
+        array[key] = 1;
     }
     else {
-        arrayCategories[categorie] = arrayCategories[categorie] + 1;
+        array[key] = array[key] + 1;
     }
-    console.log("après : " + arrayCategories[categorie]);
-    return arrayCategories;
+    return array;
 }
 
-function printCategories(categories){
-    return htmlcategorie="echo"
+function printColor(arrayColor) {
+    console.log(arrayColor);
+    var htmlColor = "";
+    for (var key in arrayColor) {
+        let value = arrayColor[key];
+        htmlColor += "<div class='color_selector " + key + "'></div>"
+    }
+    return htmlColor;
+}
+
+function printBrand(arrayBrand) {
+    var htmlBrand = "<form><div class='checkbox'>";
+    for (var key in arrayBrand) {
+        let value = arrayBrand[key];
+        htmlBrand += "<label>";
+        htmlBrand += "<input type='checkbox'>" + key + " (" + value + ")";
+        htmlBrand += "</label><br/>";
+    }
+    htmlBrand += "</div></form>";
+    return htmlBrand;
+}
+
+function printCategories(arrayCategories) {
+    var htmlCategories = "<ul class='list-unstyled'>";
+    for (var key in arrayCategories) {
+        let value = arrayCategories[key];
+        htmlCategories += "<li>" + key + " (" + value + ")</li>";
+        htmlCategories += "<ul id=\"" + key + "\"></ul>";
+    }
+    htmlCategories += "</ul>";
+    return htmlCategories;
 }
 
 function buildCatalogue(catalogue, article, cpt) {
