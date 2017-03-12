@@ -3,16 +3,24 @@ $.ajax({
     type: 'GET',
     dataType: 'json',
     success: function(json) {
-        var $data = json;
-        console.log($data);
-        console.log($data[0]["age"]);
-        var cpt = 0;
+        var $data = json; //content of our json products
+        var cpt = 0; //counting our articles
         var catalogue = "<div class='row'>\n";
         for (let article of $data) {
             if ((cpt % 3) == 0) {
                 catalogue += "</div>\n"
                 catalogue += "<div class='row'>\n"
             }
+            catalogue = buildCatalogue(catalogue,article);
+            cpt = cpt + 1;
+        }
+        catalogue += "</div>\n";
+         $("#products_catalogue").html(catalogue);
+         $("#cpt_items").html(cpt);
+    }
+});
+
+function buildCatalogue(catalogue,article){
             catalogue += "<div class='col-md-4'>\n";
             catalogue += "<div class='container-fluide'>\n";
             catalogue += "<div class='pictures_article'>\n";
@@ -42,11 +50,5 @@ $.ajax({
             catalogue += "</div>\n";
             catalogue += "</div>\n";
             catalogue += "</div>\n";
-            cpt = cpt + 1;
-        }
-        catalogue += "</div>\n";
-         $("#products_catalogue").html(catalogue);
-         $("#cpt_items").html(cpt);
-    }
-
-});
+    return catalogue;
+}
