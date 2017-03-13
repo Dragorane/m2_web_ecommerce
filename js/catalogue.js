@@ -28,6 +28,7 @@ $.ajax({
         $("#categoriesSelection").html(htmlCategories);
         $("#brandSelection").html(htmlBrand);
         $("#colorSelection").html(htmlColor);
+        $("#itemInSC").html(localStorage.length);
     }
 });
 
@@ -103,11 +104,30 @@ function buildCatalogue(catalogue, article, cpt) {
         catalogue += "<span class='price_catolgue'>" + article["price"] + "$</span>\n";
     }
     catalogue += "<div class='article_button'>\n";
-    catalogue += " <img src='ressources/img-11.png' class='subimg-article-catalogue' />\n";
+    catalogue += " <img src='ressources/img-11.png' class='subimg-article-catalogue' onclick=\"addArticleToSC(" + article["id"] + ",1)\" />\n";
     catalogue += "<img src='ressources/img-12.png' class='subimg-article-catalogue' />\n";
     catalogue += " <img src='ressources/img-13.png' class='subimg-article-catalogue' />\n";
     catalogue += "</div>\n";
     catalogue += "</div>\n";
     catalogue += "</div>\n";
     return catalogue;
+}
+
+function addArticleToSC(id, quantity) {
+    var quantity = 0;
+    var newquantity = 0;
+    if (localStorage.getItem(id) === null) {
+        localStorage.setItem(id, quantity);
+    }
+    else {
+        quantity = localStorage.getItem(id);
+        newquantity = parseInt(quantity) +1
+        localStorage.removeItem(id);
+        localStorage.setItem(id,newquantity);
+    }
+    var article = "";
+    for (var i = 0, len = localStorage.length; i < len; ++i) {
+        console.log("id :" + i + " quantity :" + localStorage.getItem(localStorage.key(i)));
+    }
+    $("#itemInSC").html(localStorage.length);
 }
