@@ -32,6 +32,8 @@ class Page {
         echo "<p>Home > Shopping Cart</p>";
         echo "<h1>Shopping Cart</h1>";
         echo "</div>";
+        echo "<div id=\"newProductAdded\" class='row'>";
+        echo "</div>";
         echo "<div class='row'>";
         echo "<div id='shoppingCartTable' class='table-responsive'>";
         echo "<table class='table'>";
@@ -39,9 +41,7 @@ class Page {
         echo "</table>";
         echo "</div>";
         echo "</div>";
-        echo "<div class='row'>";
-        echo "<div class='alert alert-success'><strong><span id='addedproduct'>!Product!</span> has been successfully added to your shopping cart.</strong></div>";
-        echo "</div>";
+
         echo "<div class='row'>";
         echo "<div class='col-md-4'>";
         require("view/shoppingcart/estimateShippingForm.html");

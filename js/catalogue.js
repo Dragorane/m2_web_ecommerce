@@ -129,4 +129,6 @@ function addArticleToSC(id, quantity) {
         console.log("id :" + i + " quantity :" + localStorage.getItem(localStorage.key(i)));
     }
     $("#itemInSC").html(localStorage.length);
+    localStorage.setItem("newProduct",id);
+    document.location.href="?page=shoppingcart"
 }
