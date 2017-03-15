@@ -96,7 +96,7 @@ function buildCatalogue(catalogue, article, cpt) {
     catalogue += "</div>\n";
     catalogue += "<a href='#'><span class='article_title'>" + article["title"] + "</span></a><br/>\n";
     if (article["promo"] == "20") {
-        var promo = parseInt(article["price"]) * parseInt(article["price"]) / 100
+        var promo = parseInt(article["price"]) * article["promo"] / 100
         var resultat = parseInt(article["price"]) - parseInt(promo);
         catalogue += "<span class='price_catolgue'><span class='price_catalogue_1'>" + article["price"] + "$</span> <span class='price_catalogue_2'>" + resultat + "$</span></span>\n";
     }
@@ -114,7 +114,6 @@ function buildCatalogue(catalogue, article, cpt) {
 }
 
 function addArticleToSC(id, quantity) {
-    var quantity = 0;
     var newquantity = 0;
     if (localStorage.getItem(id) === null) {
         localStorage.setItem(id, quantity);

@@ -15,10 +15,10 @@ class Page {
         echo "<h1>Design</h1>";
         echo "</div>";
         echo "<div class='row'>";
-        echo "<div class='col-md-2'>";
+        echo "<div class='col-md-3'>";
         require("view/border_left.html");
         echo "</div>";
-        echo "<div class='col-md-10'>";
+        echo "<div class='col-md-9'>";
         require("view/catalogue.html");
         echo "</div>";
         echo "</div>";
@@ -33,8 +33,8 @@ class Page {
         echo "<h1>Shopping Cart</h1>";
         echo "</div>";
         echo "<div class='row'>";
-        echo " <div class='table-responsive'>";
-        echo "<table id='shoppingCartTable' class='table'>";
+        echo "<div id='shoppingCartTable' class='table-responsive'>";
+        echo "<table class='table'>";
         echo "<tr><th>Item Name</th><th>Price</th><th>Quantity</th><th>SubTotal</th><th></th></tr>";
         echo "</table>";
         echo "</div>";
@@ -54,6 +54,7 @@ class Page {
         echo "</div>";
         echo "</div>";
         require("view/footer.html");
+        echo "<script src='js/shoppingcart.js'></script>";
     }
 
 }
