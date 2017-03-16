@@ -1,36 +1,58 @@
-$.ajax({
-    url: "js/product.json",
-    type: 'GET',
-    dataType: 'json',
-    success: function(json) {
-        var $data = json; //content of our json products
-        var cpt = 0; //counting our articles
-        var catalogue = "<div class='row'>\n"; //catalogue : html
-        var arrayCategories = {}; //array to stock categorie
-        var htmlCategories = ""; //var to stock html code for categorie
-        var arrayBrand = {};
-        var htmlBrand = "";
-        var arrayColor = {};
-        var htmlColor = "";
-        for (let article of $data) {
-            catalogue = buildCatalogue(catalogue, article, cpt);
-            arrayCategories = buildKV(arrayCategories, article["categorie"]);
-            arrayBrand = buildKV(arrayBrand, article["brand"]);
-            arrayColor = buildKV(arrayColor, article["color"]);
-            cpt = cpt + 1;
+function reloadPage() {
+    $.ajax({
+        url: "js/product.json",
+        type: 'GET',
+        dataType: 'json',
+        success: function(json) {
+            var $data = json; //content of our json products
+            var cpt = 0; //counting our articles
+            var arrayCategories = {}; //array to stock categorie
+            var htmlCategories = ""; //var to stock html code for categorie
+            var arraySubCategories = {};
+            var arrayBrand = {};
+            var htmlBrand = "";
+            var arrayColor = {};
+            var htmlColor = "";
+            var htmlCatalog = "<div class='row'>\n"; //catalogue : html
+            for (let article of $data) {
+                arrayCategories = buildKV(arrayCategories, article["categorie"]);
+                arrayBrand = buildKV(arrayBrand, article["brand"]);
+                arrayColor = buildKV(arrayColor, article["color"]);
+
+                if (localStorage.getItem("categorieFilter") !== null) {
+                    if (localStorage.getItem("categorieFilter") === article["categorie"]) {
+                        if (localStorage.getItem("subCategorieFilter") !== null) {
+                            if (localStorage.getItem("subCategorieFilter") === article["sub_categorie"]) {
+                                htmlCatalog = buildArticle(htmlCatalog, article, cpt);
+                                cpt = cpt + 1;
+                            }
+                        }
+                        else {
+                            htmlCatalog = buildArticle(htmlCatalog, article, cpt);
+                            cpt = cpt + 1;
+                        }
+                        arraySubCategories = buildKV(arraySubCategories, article["sub_categorie"]);
+                    }
+                }
+                else {
+                    htmlCatalog = buildArticle(htmlCatalog, article, cpt);
+                    cpt = cpt + 1;
+                }
+            }
+
+            htmlCatalog += "</div>\n";
+            htmlCategories = printCategories(arrayCategories, arraySubCategories);
+            htmlBrand = printBrand(arrayBrand);
+            htmlColor = printColor(arrayColor);
+            $("#products_catalogue").html(htmlCatalog);
+            $("#cpt_items").html(cpt);
+            $("#categoriesSelection").html(htmlCategories);
+            $("#brandSelection").html(htmlBrand);
+            $("#colorSelection").html(htmlColor);
+            $("#itemInSC").html(localStorage.length);
         }
-        catalogue += "</div>\n";
-        htmlCategories = printCategories(arrayCategories);
-        htmlBrand = printBrand(arrayBrand);
-        htmlColor = printColor(arrayColor);
-        $("#products_catalogue").html(catalogue);
-        $("#cpt_items").html(cpt);
-        $("#categoriesSelection").html(htmlCategories);
-        $("#brandSelection").html(htmlBrand);
-        $("#colorSelection").html(htmlColor);
-        $("#itemInSC").html(localStorage.length);
-    }
-});
+    });
+}
 
 
 function buildKV(array, key) {
@@ -44,7 +66,6 @@ function buildKV(array, key) {
 }
 
 function printColor(arrayColor) {
-    console.log(arrayColor);
     var htmlColor = "";
     for (var key in arrayColor) {
         let value = arrayColor[key];
@@ -65,18 +86,49 @@ function printBrand(arrayBrand) {
     return htmlBrand;
 }
 
-function printCategories(arrayCategories) {
+function printCategories(arrayCategories, arraySubCategories) {
     var htmlCategories = "<ul class='list-unstyled'>";
     for (var key in arrayCategories) {
         let value = arrayCategories[key];
-        htmlCategories += "<li>" + key + " (" + value + ")</li>";
-        htmlCategories += "<ul id=\"" + key + "\"></ul>";
+        if (localStorage.getItem("categorieFilter") === null) {
+            htmlCategories += "<li onclick=\"articleInCategorie('" + key + "')\">" + key + " (" + value + ")</li>";
+        }
+        else {
+            if (localStorage.getItem("categorieFilter") !== key) {
+                htmlCategories += "<li onclick=\"articleInCategorie('" + key + "')\">" + key + " (" + value + ")</li>";
+            }
+            else {
+                htmlCategories += "<li class='selectedCategory' onclick=\"articleInCategorie('" + key + "')\">" + key + " (" + value + ")</li>";
+                htmlCategories += "<ul class='list-unstyled'>";
+                for (var subKey in arraySubCategories) {
+                    let subValue = arraySubCategories[subKey];
+                    if (localStorage.getItem("subCategorieFilter") !== subKey) {
+                        htmlCategories += "<li class='subCategory' onclick=\"articleInSubCategorie('" + subKey + "')\">" + subKey + " (" + subValue + ")</li>";
+                    }
+                    else {
+                        htmlCategories += "<li class='subCategory selectedCategory' onclick=\"articleInSubCategorie('" + subKey + "')\">" + subKey + " (" + subValue + ")</li>";
+                    }
+                }
+                htmlCategories += "</ul>";
+            }
+        }
     }
     htmlCategories += "</ul>";
     return htmlCategories;
 }
 
-function buildCatalogue(catalogue, article, cpt) {
+function articleInCategorie(categorie) {
+    localStorage.removeItem("subCategorieFilter");
+    localStorage.setItem("categorieFilter", categorie);
+    reloadPage();
+}
+
+function articleInSubCategorie(categorie) {
+    localStorage.setItem("subCategorieFilter", categorie);
+    reloadPage();
+}
+
+function buildArticle(catalogue, article, cpt) {
     if ((cpt % 3) == 0) {
         catalogue += "</div>\n"
         catalogue += "<div class='row'>\n"
@@ -120,15 +172,14 @@ function addArticleToSC(id, quantity) {
     }
     else {
         quantity = localStorage.getItem(id);
-        newquantity = parseInt(quantity) +1
+        newquantity = parseInt(quantity) + 1
         localStorage.removeItem(id);
-        localStorage.setItem(id,newquantity);
+        localStorage.setItem(id, newquantity);
     }
     var article = "";
-    for (var i = 0, len = localStorage.length; i < len; ++i) {
-        console.log("id :" + i + " quantity :" + localStorage.getItem(localStorage.key(i)));
-    }
     $("#itemInSC").html(localStorage.length);
-    localStorage.setItem("newProduct",id);
-    document.location.href="?page=shoppingcart"
+    localStorage.setItem("newProduct", id);
+    document.location.href = "?page=shoppingcart"
 }
+
+reloadPage();

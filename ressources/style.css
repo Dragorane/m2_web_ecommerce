@@ -31,13 +31,21 @@ body {
 }
 
 
+/*Categorie */
+.selectedCategory {
+    font-weight: bold;
+}
+.subCategory{
+    margin-left:20px;
+}
+
 /*color selector*/
 
 .color_selector {
-    width:10px;
+    width: 10px;
     height: 10px;
-    margin:2px;
-    float:left;
+    margin: 2px;
+    float: left;
 }
 
 .red {

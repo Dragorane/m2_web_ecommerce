@@ -5,7 +5,7 @@
     "price":"29.00",
     "promo":"-1",
     "categorie":"Vivamus mauris",
-    "sub_categorie":"Vivamus mauris vitae",
+    "sub_categorie":"vitae",
     "color":"orange",
     "brand":"Karma",
     "age":"old"
@@ -16,7 +16,7 @@
     "price":"22.00",
     "promo":"20",
     "categorie":"Vivamus mauris",
-    "sub_categorie":"Vivamus mauris semper",
+    "sub_categorie":"semper",
     "color":"red",
     "brand":"Karma",
     "age":"old"
@@ -27,7 +27,7 @@
     "price":"29.00",
     "promo":"-1",
     "categorie":"Rhoncus vitae semper",
-    "sub_categorie":"Vivamus mauris",
+    "sub_categorie":"mauris",
     "color":"blue",
     "brand":"Ideos",
     "age":"new"
