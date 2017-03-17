@@ -32,12 +32,15 @@ body {
 
 
 /*Categorie */
+
 .selectedCategory {
     font-weight: bold;
 }
-.subCategory{
-    margin-left:20px;
+
+.subCategory {
+    margin-left: 20px;
 }
+
 
 /*color selector*/
 
@@ -98,6 +101,8 @@ body {
     position: relative;
     vertical-align: middle;
     display: inline-block;
+    margin: auto;
+    BORDER: 1px solid black;
 }
 
 .img-article-promo {
@@ -106,7 +111,10 @@ body {
     right: 0;
 }
 
-.subimg-article-catalogue {}
+.img-article-catalogue:hover {
+    width: 300px;
+    height: 400px;
+}
 
 .price_catalogue {}
 
