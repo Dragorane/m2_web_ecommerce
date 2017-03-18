@@ -49,7 +49,12 @@ function reloadPage() {
             $("#categoriesSelection").html(htmlCategories);
             $("#brandSelection").html(htmlBrand);
             $("#colorSelection").html(htmlColor);
-            $("#itemInSC").html(localStorage.length);
+            if (localStorage.getItem("itemInSc") === null) {
+                $("#itemInSC").html("0");
+            }
+            else {
+                $("#itemInSC").html(localStorage.getItem("itemInSc"));
+            }
         }
     });
 }
@@ -177,7 +182,6 @@ function addArticleToSC(id, quantity) {
         localStorage.setItem(id, newquantity);
     }
     var article = "";
-    $("#itemInSC").html(localStorage.length);
     localStorage.setItem("newProduct", id);
     document.location.href = "?page=shoppingcart"
 }

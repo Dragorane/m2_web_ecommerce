@@ -1,9 +1,10 @@
-function loadPage() {
+function loadPage(inputToFocus) {
+    console.log("input to focus :"+inputToFocus);
     $.ajax({
         url: "js/product.json",
         type: 'GET',
         dataType: 'json',
-        success: function(json) {
+        success: function(json,inputToFocus) {
             var $data = json; //content of our json products
             var cpt = 0; //counting our articles
             var tablehtml = "<table class='table'>\n"; //catalogue : html
@@ -23,13 +24,14 @@ function loadPage() {
                     }
                     subTotal = articleQuantity * parseFloat(article["price"]);
                     tablehtml += "<tr>";
-                    tablehtml += "<th>" + article["title"] + "</th>";
+                    tablehtml += "<th><img src='ressources/cart.png' class='img-article-sc'>" + article["title"] + "</th>";
                     tablehtml += "<th>" + price + "</th>";
                     tablehtml += "<th><form action='#'><input type='text' name='" + article["id"] + "' value='" + articleQuantity + "'></input></form></th>";
                     tablehtml += "<th>" + subTotal + "</th>";
                     tablehtml += "<th><img src='ressources/cart-02.png' class='subimg-article-catalogue' onclick=\"removeArticleSC(" + article["id"] + ")\" /></th>";
                     tablehtml += "</tr>\n";
                     total += subTotal;
+                    cpt=cpt+1;
                 }
                 if ((localStorage.getItem("newProduct") !== null) && (article["id"] === localStorage.getItem("newProduct"))) {
                     newProductDiv = "<div class='alert alert-success'><strong><span id='addedproduct'>" + article["title"] + "</span> has been successfully added to your shopping cart.</strong></div>";
@@ -39,9 +41,11 @@ function loadPage() {
             tablehtml += "</table>\n";
             $("#newProductAdded").html(newProductDiv);
             $("#shoppingCartTable").html(tablehtml);
-            $("#itemInSC").html(localStorage.length);
+            localStorage.setItem("itemInSc",cpt);
+            $("#itemInSC").html(cpt);
             $("#grandTotal").html("$" + total);
             $("#subTotal").html("$" + total);
+            inputToFocus.focus();
         }
     });
 }
@@ -52,12 +56,12 @@ $(document).on('change keypress', 'input', function() {
     var id = $(this).attr("name");
     localStorage.removeItem(id);
     localStorage.setItem(id, newQuantity);
-    loadPage();
+    loadPage($(this));
 });
 
 function removeArticleSC(id) {
     localStorage.removeItem(id);
-    loadPage();
+    loadPage(null);
 }
 
 loadPage();
