@@ -1,4 +1,4 @@
-function reloadPage() {
+function reloadPage(filter) {
     $.ajax({
         url: "js/product.json",
         type: 'GET',
@@ -18,28 +18,42 @@ function reloadPage() {
                 arrayCategories = buildKV(arrayCategories, article["categorie"]);
                 arrayBrand = buildKV(arrayBrand, article["brand"]);
                 arrayColor = buildKV(arrayColor, article["color"]);
-
-                if (localStorage.getItem("categorieFilter") !== null) {
-                    if (localStorage.getItem("categorieFilter") === article["categorie"]) {
-                        if (localStorage.getItem("subCategorieFilter") !== null) {
-                            if (localStorage.getItem("subCategorieFilter") === article["sub_categorie"]) {
+                if (filter !== null) {
+                    switch (filter.type) {
+                        case "search":
+                            console.log("filter.value : "+filter.value);
+                            console.log("article title : "+article["title"]);
+                            if(article["title"].includes(filter.value)){
                                 htmlCatalog = buildArticle(htmlCatalog, article, cpt);
                                 cpt = cpt + 1;
                             }
-                        }
-                        else {
-                            htmlCatalog = buildArticle(htmlCatalog, article, cpt);
-                            cpt = cpt + 1;
-                        }
-                        arraySubCategories = buildKV(arraySubCategories, article["sub_categorie"]);
+                            console.log("dedans : type : " + filter.type + " valeur :" + filter.value);
+                            break;
+
                     }
                 }
                 else {
-                    htmlCatalog = buildArticle(htmlCatalog, article, cpt);
-                    cpt = cpt + 1;
+                    if (localStorage.getItem("categorieFilter") !== null) {
+                        if (localStorage.getItem("categorieFilter") === article["categorie"]) {
+                            if (localStorage.getItem("subCategorieFilter") !== null) {
+                                if (localStorage.getItem("subCategorieFilter") === article["sub_categorie"]) {
+                                    htmlCatalog = buildArticle(htmlCatalog, article, cpt);
+                                    cpt = cpt + 1;
+                                }
+                            }
+                            else {
+                                htmlCatalog = buildArticle(htmlCatalog, article, cpt);
+                                cpt = cpt + 1;
+                            }
+                            arraySubCategories = buildKV(arraySubCategories, article["sub_categorie"]);
+                        }
+                    }
+                    else {
+                        htmlCatalog = buildArticle(htmlCatalog, article, cpt);
+                        cpt = cpt + 1;
+                    }
                 }
             }
-
             htmlCatalog += "</div>\n";
             htmlCategories = printCategories(arrayCategories, arraySubCategories);
             htmlBrand = printBrand(arrayBrand);
@@ -125,12 +139,12 @@ function printCategories(arrayCategories, arraySubCategories) {
 function articleInCategorie(categorie) {
     localStorage.removeItem("subCategorieFilter");
     localStorage.setItem("categorieFilter", categorie);
-    reloadPage();
+    reloadPage(null);
 }
 
 function articleInSubCategorie(categorie) {
     localStorage.setItem("subCategorieFilter", categorie);
-    reloadPage();
+    reloadPage(null);
 }
 
 function buildArticle(catalogue, article, cpt) {
@@ -186,4 +200,17 @@ function addArticleToSC(id, quantity) {
     document.location.href = "?page=shoppingcart"
 }
 
-reloadPage();
+function searchBarController() {
+    var newSearch = {
+        value: $("#searchBarCatalog").val(),
+        type: "search"
+    };
+    if (newSearch.value === "") {
+        reloadPage(null);
+    }
+    else {
+        reloadPage(newSearch);
+    }
+}
+
+reloadPage(null);
