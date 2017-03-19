@@ -35,23 +35,15 @@ function reloadPage(filter) {
                                 showArticle = 1;
                             }
                             break;
-                        case "price":
-                            if ((parseInt(article["price"]) >= parseInt(filter.valueMin)) && (parseInt(article["price"]) <= parseInt(filter.valueMax))) {
-                                showArticle = 1;
-                            }
-                            break;
                     }
                 }
                 else {
                     var searchFilter = filterSearch(article["title"]);
-                    console.log("filter searchFilter : " + searchFilter);
                     var categoryFilter = filterCategorie(article["categorie"], article["sub_categorie"], arraySubCategories);
                     arraySubCategories = categoryFilter.subcat;
-                    console.log("filter categoryFilter : " + categoryFilter.show);
-                    var subCategorie = filterSubCategorie(article["sub_categorie"]);
-                    console.log("filter subCategorie : " + subCategorie);
-
-                    if (searchFilter ===true && categoryFilter.show === true && subCategorie === true) {
+                    var subCategorieFilter = filterSubCategorie(article["sub_categorie"]);
+                    var priceFilter = filterPrice(article["price"]);
+                    if (priceFilter === true & searchFilter === true && categoryFilter.show === true && subCategorieFilter === true) {
                         htmlCatalog = buildArticle(htmlCatalog, article, cpt);
                         cpt = cpt + 1;
                     }
@@ -75,6 +67,22 @@ function reloadPage(filter) {
         }
     });
 }
+
+function filterPrice(price) {
+    var showArticle = false;
+    var min = localStorage.getItem("priceFilterMin");
+    var max = localStorage.getItem("priceFilterMax");
+    if ((min === "undefined") || (max === "undefined") || (min === null) || (max === null)) {
+        showArticle = true;
+    }
+    else {
+        if ((parseInt(price) >= parseInt(min)) && (parseInt(price) <= parseInt(max))) {
+            showArticle = true;
+        }
+    }
+    return showArticle;
+}
+
 
 function filterSearch(title) {
     var showArticle = false;
@@ -294,12 +302,9 @@ function addArticleToSC(id, quantity) {
 var priceSlider = $('#ex2').slider();
 
 priceSlider.on('slideStop', function(ev) {
-    var colorSearch = {
-        valueMin: priceSlider.data('slider').value[0],
-        valueMax: priceSlider.data('slider').value[1],
-        type: "price"
-    };
-    reloadPage(colorSearch);
+    localStorage.setItem("priceFilterMin", priceSlider.data('slider').value[0]);
+    localStorage.setItem("priceFilterMax", priceSlider.data('slider').value[1]);
+    reloadPage(null);
 });
 
 reloadPage(null);
