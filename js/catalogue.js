@@ -19,6 +19,7 @@ function reloadPage(filter) {
             var showArticle = 0;
             for (let article of $data) {
                 showArticle = 0;
+                arrayCategories = buildKV(arrayCategories, "All");
                 arrayCategories = buildKV(arrayCategories, article["categorie"]);
                 arrayBrand = buildKV(arrayBrand, article["brand"]);
                 arrayColor = buildKV(arrayColor, article["color"]);
@@ -38,22 +39,25 @@ function reloadPage(filter) {
                             if (checkedBrand[article["brand"]] === 1) {
                                 showArticle = 1;
                             }
+                            break;
+                        case "price":
+                            if ((parseInt(article["price"]) >= parseInt(filter.valueMin)) && (parseInt(article["price"]) <= parseInt(filter.valueMax))) {
+                                showArticle = 1;
+                            }
+                            break;
                     }
                 }
                 else {
-                    if (localStorage.getItem("categorieFilter") !== null) {
-                        categoriesFilter(htmlCatalog, article, cpt);
-                        if (localStorage.getItem("categorieFilter") === article["categorie"]) {
-                            if (localStorage.getItem("subCategorieFilter") !== null) {
-                                if (localStorage.getItem("subCategorieFilter") === article["sub_categorie"]) {
-                                    showArticle = 1;
-                                }
-                            }
-                            else {
-                                showArticle = 1;
-                            }
-                            arraySubCategories = buildKV(arraySubCategories, article["sub_categorie"]);
-                        }
+                    if (localStorage.getItem("categorieFilter") === "All") {
+                        showArticle = 1;
+                    }
+                    if (localStorage.getItem("subCategorieFilter") === article["sub_categorie"]) {
+                        showArticle = 1;
+                    }
+
+                    if (localStorage.getItem("categorieFilter") === article["categorie"]) {
+                        showArticle = 1;
+                        arraySubCategories = buildKV(arraySubCategories, article["sub_categorie"]);
                     }
                 }
                 if (showArticle === 1) {
@@ -80,6 +84,55 @@ function reloadPage(filter) {
     });
 }
 
+/*Catalog's filter function*/
+
+function articleInCategorie(categorie) {
+    localStorage.removeItem("subCategorieFilter");
+    localStorage.setItem("categorieFilter", categorie);
+    reloadPage(null);
+}
+
+function articleInSubCategorie(categorie) {
+    localStorage.setItem("subCategorieFilter", categorie);
+    reloadPage(null);
+}
+
+function searchBarController() {
+    var newSearch = {
+        value: $("#searchBarCatalog").val(),
+        type: "search"
+    };
+    if (newSearch.value === "") {
+        reloadPage(null);
+    }
+    else {
+        reloadPage(newSearch);
+    }
+}
+
+function colorSelection(color) {
+    var colorSearch = {
+        value: color,
+        type: "color"
+    };
+    reloadPage(colorSearch);
+}
+
+function checkBrand(input) {
+    var brandSearch = {
+        value: "not use for brand",
+        type: "brand"
+    };
+    if (input.checked) {
+        checkedBrand[input.name] = 1;
+    }
+    else {
+        checkedBrand[input.name] = 0;
+    }
+    reloadPage(brandSearch);
+}
+
+/*Kvstore function*/
 
 function buildKV(array, key) {
     if (typeof array[key] === 'undefined') {
@@ -91,10 +144,7 @@ function buildKV(array, key) {
     return array;
 }
 
-function categoriesFilter(htmlCatalog, article, cpt) {
-
-}
-
+/*HTML generator functions*/
 function printColor(arrayColor) {
     var htmlColor = "";
     for (var key in arrayColor) {
@@ -152,52 +202,6 @@ function printCategories(arrayCategories, arraySubCategories) {
     return htmlCategories;
 }
 
-function articleInCategorie(categorie) {
-    localStorage.removeItem("subCategorieFilter");
-    localStorage.setItem("categorieFilter", categorie);
-    reloadPage(null);
-}
-
-function articleInSubCategorie(categorie) {
-    localStorage.setItem("subCategorieFilter", categorie);
-    reloadPage(null);
-}
-
-function searchBarController() {
-    var newSearch = {
-        value: $("#searchBarCatalog").val(),
-        type: "search"
-    };
-    if (newSearch.value === "") {
-        reloadPage(null);
-    }
-    else {
-        reloadPage(newSearch);
-    }
-}
-
-function colorSelection(color) {
-    var colorSearch = {
-        value: color,
-        type: "color"
-    };
-    reloadPage(colorSearch);
-}
-
-function checkBrand(input) {
-    var brandSearch = {
-        value: "not use for brand",
-        type: "brand"
-    };
-    if (input.checked) {
-        checkedBrand[input.name] = 1;
-    }
-    else {
-        checkedBrand[input.name] = 0;
-    }
-    reloadPage(brandSearch);
-}
-
 function buildArticle(catalogue, article, cpt) {
     if ((cpt % 3) == 0) {
         catalogue += "</div>\n"
@@ -250,5 +254,17 @@ function addArticleToSC(id, quantity) {
     localStorage.setItem("newProduct", id);
     document.location.href = "?page=shoppingcart"
 }
+
+/*Slider eventListner*/
+var priceSlider = $('#ex2').slider();
+
+priceSlider.on('slideStop', function(ev) {
+    var colorSearch = {
+        valueMin: priceSlider.data('slider').value[0],
+        valueMax: priceSlider.data('slider').value[1],
+        type: "price"
+    };
+    reloadPage(colorSearch);
+});
 
 reloadPage(null);
