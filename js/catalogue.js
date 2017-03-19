@@ -16,37 +16,23 @@ function reloadPage(filter) {
             var arrayColor = {};
             var htmlColor = "";
             var htmlCatalog = "<div class='row'>\n"; //catalogue : html
-            var showArticle = 0;
             for (let article of $data) {
-                showArticle = 0;
                 arrayCategories = buildKV(arrayCategories, "All");
                 arrayCategories = buildKV(arrayCategories, article["categorie"]);
                 arrayBrand = buildKV(arrayBrand, article["brand"]);
+                initBrand(article["brand"]);
                 arrayColor = buildKV(arrayColor, article["color"]);
-                if (filter !== null) {
-                    switch (filter.type) {
-                        case "color":
-                            if (article["color"] === filter.value) {
-                                showArticle = 1;
-                            }
-                            break;
-                        case "brand":
-                            if (checkedBrand[article["brand"]] === 1) {
-                                showArticle = 1;
-                            }
-                            break;
-                    }
-                }
-                else {
-                    var searchFilter = filterSearch(article["title"]);
-                    var categoryFilter = filterCategorie(article["categorie"], article["sub_categorie"], arraySubCategories);
-                    arraySubCategories = categoryFilter.subcat;
-                    var subCategorieFilter = filterSubCategorie(article["sub_categorie"]);
-                    var priceFilter = filterPrice(article["price"]);
-                    if (priceFilter === true & searchFilter === true && categoryFilter.show === true && subCategorieFilter === true) {
-                        htmlCatalog = buildArticle(htmlCatalog, article, cpt);
-                        cpt = cpt + 1;
-                    }
+
+                var searchFilter = filterSearch(article["title"]);
+                var categoryFilter = filterCategorie(article["categorie"], article["sub_categorie"], arraySubCategories);
+                arraySubCategories = categoryFilter.subcat;
+                var subCategorieFilter = filterSubCategorie(article["sub_categorie"]);
+                var colorFilter = filterColor(article["color"]);
+                var priceFilter = filterPrice(article["price"]);
+                var brandFilter = filterBrand(article["brand"]);
+                if (brandFilter === true && colorFilter === true && priceFilter === true & searchFilter === true && categoryFilter.show === true && subCategorieFilter === true) {
+                    htmlCatalog = buildArticle(htmlCatalog, article, cpt);
+                    cpt = cpt + 1;
                 }
             }
             htmlCatalog += "</div>\n";
@@ -66,6 +52,33 @@ function reloadPage(filter) {
             }
         }
     });
+}
+
+function initBrand(brand){
+    checkedBrand[brand]=1;
+}
+
+function filterBrand(brand) {
+    var showArticle = false;
+    if ((checkedBrand[brand] === 1) || checkedBrand[brand] === "undefined") {
+        showArticle = true;
+    }
+    return showArticle;
+
+}
+
+function filterColor(color) {
+    var showArticle = false;
+    if ((localStorage.getItem("colorFilter") === "undefined") || (localStorage.getItem("colorFilter") === null)) {
+        showArticle = true;
+    }
+    else {
+        if (localStorage.getItem("colorFilter") === color) {
+            showArticle = true;
+        }
+    }
+    return showArticle;
+
 }
 
 function filterPrice(price) {
@@ -154,25 +167,23 @@ function searchBarController() {
 }
 
 function colorSelection(color) {
-    var colorSearch = {
-        value: color,
-        type: "color"
-    };
-    reloadPage(colorSearch);
+    if (color === localStorage.getItem("colorFilter")) {
+        localStorage.removeItem("colorFilter");
+    }
+    else {
+        localStorage.setItem("colorFilter", color);
+    }
+    reloadPage(null);
 }
 
 function checkBrand(input) {
-    var brandSearch = {
-        value: "not use for brand",
-        type: "brand"
-    };
     if (input.checked) {
         checkedBrand[input.name] = 1;
     }
     else {
         checkedBrand[input.name] = 0;
     }
-    reloadPage(brandSearch);
+    reloadPage(null);
 }
 
 /*Kvstore function*/
@@ -192,7 +203,12 @@ function printColor(arrayColor) {
     var htmlColor = "";
     for (var key in arrayColor) {
         let value = arrayColor[key];
-        htmlColor += "<div class='color_selector " + key + "' name='" + key + "' onclick='colorSelection(\"" + key + "\")'></div>"
+        if (localStorage.getItem("colorFilter") === key) {
+            htmlColor += "<div class='active_color_selector " + key + "' name='" + key + "' onclick='colorSelection(\"" + key + "\")'></div>"
+        }
+        else {
+            htmlColor += "<div class='color_selector " + key + "' name='" + key + "' onclick='colorSelection(\"" + key + "\")'></div>"
+        }
     }
     return htmlColor;
 }
@@ -202,6 +218,7 @@ function printBrand(arrayBrand) {
     for (var key in arrayBrand) {
         let value = arrayBrand[key];
         htmlBrand += "<label>";
+        console.log(checkedBrand[key]);
         if (checkedBrand[key] === 1) {
             htmlBrand += "<input type='checkbox' name='" + key + "' onclick='checkBrand(this)' checked='checked'>" + key + " (" + value + ")";
         }
