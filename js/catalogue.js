@@ -1,3 +1,5 @@
+var checkedBrand = {}; //global var to brand filter
+
 function reloadPage(filter) {
     $.ajax({
         url: "js/product.json",
@@ -21,19 +23,28 @@ function reloadPage(filter) {
                 if (filter !== null) {
                     switch (filter.type) {
                         case "search":
-                            console.log("filter.value : "+filter.value);
-                            console.log("article title : "+article["title"]);
-                            if(article["title"].includes(filter.value)){
+                            if (article["title"].includes(filter.value)) {
                                 htmlCatalog = buildArticle(htmlCatalog, article, cpt);
                                 cpt = cpt + 1;
                             }
-                            console.log("dedans : type : " + filter.type + " valeur :" + filter.value);
                             break;
-
+                        case "color":
+                            if (article["color"] === filter.value) {
+                                htmlCatalog = buildArticle(htmlCatalog, article, cpt);
+                                cpt = cpt + 1;
+                            }
+                            break;
+                        case "brand":
+                            console.log("ça passe ! brand : " + article["brand"] + " value : " + checkedBrand[article["brand"]]);
+                            if (checkedBrand[article["brand"]] === 1) {
+                                htmlCatalog = buildArticle(htmlCatalog, article, cpt);
+                                cpt = cpt + 1;
+                            }
                     }
                 }
                 else {
                     if (localStorage.getItem("categorieFilter") !== null) {
+                        categoriesFilter(htmlCatalog, article, cpt);
                         if (localStorage.getItem("categorieFilter") === article["categorie"]) {
                             if (localStorage.getItem("subCategorieFilter") !== null) {
                                 if (localStorage.getItem("subCategorieFilter") === article["sub_categorie"]) {
@@ -84,11 +95,15 @@ function buildKV(array, key) {
     return array;
 }
 
+function categoriesFilter(htmlCatalog, article, cpt) {
+
+}
+
 function printColor(arrayColor) {
     var htmlColor = "";
     for (var key in arrayColor) {
         let value = arrayColor[key];
-        htmlColor += "<div class='color_selector " + key + "'></div>"
+        htmlColor += "<div class='color_selector " + key + "' name='" + key + "' onclick='colorSelection(\"" + key + "\")'></div>"
     }
     return htmlColor;
 }
@@ -98,7 +113,12 @@ function printBrand(arrayBrand) {
     for (var key in arrayBrand) {
         let value = arrayBrand[key];
         htmlBrand += "<label>";
-        htmlBrand += "<input type='checkbox'>" + key + " (" + value + ")";
+        if (checkedBrand[key] === 1) {
+            htmlBrand += "<input type='checkbox' name='" + key + "' onclick='checkBrand(this)' checked='checked'>" + key + " (" + value + ")";
+        }
+        else {
+            htmlBrand += "<input type='checkbox' name='" + key + "' onclick='checkBrand(this)'>" + key + " (" + value + ")";
+        }
         htmlBrand += "</label><br/>";
     }
     htmlBrand += "</div></form>";
@@ -145,6 +165,41 @@ function articleInCategorie(categorie) {
 function articleInSubCategorie(categorie) {
     localStorage.setItem("subCategorieFilter", categorie);
     reloadPage(null);
+}
+
+function searchBarController() {
+    var newSearch = {
+        value: $("#searchBarCatalog").val(),
+        type: "search"
+    };
+    if (newSearch.value === "") {
+        reloadPage(null);
+    }
+    else {
+        reloadPage(newSearch);
+    }
+}
+
+function colorSelection(color) {
+    var colorSearch = {
+        value: color,
+        type: "color"
+    };
+    reloadPage(colorSearch);
+}
+
+function checkBrand(input) {
+    var brandSearch = {
+        value: "not use for brand",
+        type: "brand"
+    };
+    if (input.checked) {
+        checkedBrand[input.name] = 1;
+    }
+    else {
+        checkedBrand[input.name] = 0;
+    }
+    reloadPage(brandSearch);
 }
 
 function buildArticle(catalogue, article, cpt) {
@@ -198,19 +253,6 @@ function addArticleToSC(id, quantity) {
     var article = "";
     localStorage.setItem("newProduct", id);
     document.location.href = "?page=shoppingcart"
-}
-
-function searchBarController() {
-    var newSearch = {
-        value: $("#searchBarCatalog").val(),
-        type: "search"
-    };
-    if (newSearch.value === "") {
-        reloadPage(null);
-    }
-    else {
-        reloadPage(newSearch);
-    }
 }
 
 reloadPage(null);
