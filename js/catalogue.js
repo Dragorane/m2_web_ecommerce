@@ -16,7 +16,9 @@ function reloadPage(filter) {
             var arrayColor = {};
             var htmlColor = "";
             var htmlCatalog = "<div class='row'>\n"; //catalogue : html
+            var showArticle = 0;
             for (let article of $data) {
+                showArticle = 0;
                 arrayCategories = buildKV(arrayCategories, article["categorie"]);
                 arrayBrand = buildKV(arrayBrand, article["brand"]);
                 arrayColor = buildKV(arrayColor, article["color"]);
@@ -24,21 +26,17 @@ function reloadPage(filter) {
                     switch (filter.type) {
                         case "search":
                             if (article["title"].includes(filter.value)) {
-                                htmlCatalog = buildArticle(htmlCatalog, article, cpt);
-                                cpt = cpt + 1;
+                                showArticle = 1;
                             }
                             break;
                         case "color":
                             if (article["color"] === filter.value) {
-                                htmlCatalog = buildArticle(htmlCatalog, article, cpt);
-                                cpt = cpt + 1;
+                                showArticle = 1;
                             }
                             break;
                         case "brand":
-                            console.log("ça passe ! brand : " + article["brand"] + " value : " + checkedBrand[article["brand"]]);
                             if (checkedBrand[article["brand"]] === 1) {
-                                htmlCatalog = buildArticle(htmlCatalog, article, cpt);
-                                cpt = cpt + 1;
+                                showArticle = 1;
                             }
                     }
                 }
@@ -48,21 +46,19 @@ function reloadPage(filter) {
                         if (localStorage.getItem("categorieFilter") === article["categorie"]) {
                             if (localStorage.getItem("subCategorieFilter") !== null) {
                                 if (localStorage.getItem("subCategorieFilter") === article["sub_categorie"]) {
-                                    htmlCatalog = buildArticle(htmlCatalog, article, cpt);
-                                    cpt = cpt + 1;
+                                    showArticle = 1;
                                 }
                             }
                             else {
-                                htmlCatalog = buildArticle(htmlCatalog, article, cpt);
-                                cpt = cpt + 1;
+                                showArticle = 1;
                             }
                             arraySubCategories = buildKV(arraySubCategories, article["sub_categorie"]);
                         }
                     }
-                    else {
-                        htmlCatalog = buildArticle(htmlCatalog, article, cpt);
-                        cpt = cpt + 1;
-                    }
+                }
+                if (showArticle === 1) {
+                    htmlCatalog = buildArticle(htmlCatalog, article, cpt);
+                    cpt = cpt + 1;
                 }
             }
             htmlCatalog += "</div>\n";
