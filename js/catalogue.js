@@ -25,11 +25,6 @@ function reloadPage(filter) {
                 arrayColor = buildKV(arrayColor, article["color"]);
                 if (filter !== null) {
                     switch (filter.type) {
-                        case "search":
-                            if (article["title"].includes(filter.value)) {
-                                showArticle = 1;
-                            }
-                            break;
                         case "color":
                             if (article["color"] === filter.value) {
                                 showArticle = 1;
@@ -48,21 +43,18 @@ function reloadPage(filter) {
                     }
                 }
                 else {
-                    if (localStorage.getItem("categorieFilter") === "All") {
-                        showArticle = 1;
-                    }
-                    if (localStorage.getItem("subCategorieFilter") === article["sub_categorie"]) {
-                        showArticle = 1;
-                    }
+                    var searchFilter = filterSearch(article["title"]);
+                    console.log("filter searchFilter : " + searchFilter);
+                    var categoryFilter = filterCategorie(article["categorie"], article["sub_categorie"], arraySubCategories);
+                    arraySubCategories = categoryFilter.subcat;
+                    console.log("filter categoryFilter : " + categoryFilter.show);
+                    var subCategorie = filterSubCategorie(article["sub_categorie"]);
+                    console.log("filter subCategorie : " + subCategorie);
 
-                    if (localStorage.getItem("categorieFilter") === article["categorie"]) {
-                        showArticle = 1;
-                        arraySubCategories = buildKV(arraySubCategories, article["sub_categorie"]);
+                    if (searchFilter ===true && categoryFilter.show === true && subCategorie === true) {
+                        htmlCatalog = buildArticle(htmlCatalog, article, cpt);
+                        cpt = cpt + 1;
                     }
-                }
-                if (showArticle === 1) {
-                    htmlCatalog = buildArticle(htmlCatalog, article, cpt);
-                    cpt = cpt + 1;
                 }
             }
             htmlCatalog += "</div>\n";
@@ -84,6 +76,50 @@ function reloadPage(filter) {
     });
 }
 
+function filterSearch(title) {
+    var showArticle = false;
+    if ((localStorage.getItem("filter_search") === "undefined") || (localStorage.getItem("filter_search") === null)) {
+        showArticle = true;
+    }
+    else {
+        if (title.includes(localStorage.getItem("filter_search"))) {
+            showArticle = true;
+        }
+    }
+    return showArticle;
+}
+
+function filterCategorie(categorie, subCategorie, arraySubCategories) {
+    var showArticle = false;
+    if (localStorage.getItem("categorieFilter") === "undefined") {
+        localStorage.setItem("categorieFilter", "All");
+    }
+    if (localStorage.getItem("categorieFilter") === categorie) {
+        showArticle = true;
+        arraySubCategories = buildKV(arraySubCategories, subCategorie);
+    }
+    if (localStorage.getItem("categorieFilter") === "All") {
+        showArticle = true;
+    }
+    return {
+        show: showArticle,
+        subcat: arraySubCategories
+    };
+}
+
+function filterSubCategorie(subCategory) {
+    var showArticle = false;
+    if ((localStorage.getItem("subCategorieFilter") === "undefined") || (localStorage.getItem("subCategorieFilter") === null)) {
+        showArticle = true;
+    }
+    else {
+        if (localStorage.getItem("subCategorieFilter") === subCategory) {
+            showArticle = true;
+        }
+    }
+    return showArticle;
+}
+
 /*Catalog's filter function*/
 
 function articleInCategorie(categorie) {
@@ -98,16 +134,15 @@ function articleInSubCategorie(categorie) {
 }
 
 function searchBarController() {
-    var newSearch = {
-        value: $("#searchBarCatalog").val(),
-        type: "search"
-    };
-    if (newSearch.value === "") {
-        reloadPage(null);
+    var search = $("#searchBarCatalog").val();
+    if (search === "") {
+        localStorage.removeItem("filter_search");
     }
     else {
-        reloadPage(newSearch);
+        localStorage.setItem("filter_search", search);
+
     }
+    reloadPage(null);
 }
 
 function colorSelection(color) {
