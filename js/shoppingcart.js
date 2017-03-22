@@ -55,10 +55,14 @@ function loadPage(inputToFocus) {
 
 
 $(document).on('change keyup', 'input', function() {
-    var newQuantity = parseInt($(this).val());
+    var newQuantity = $(this).val();
+    console.log("catched : "+newQuantity)
     var id = $(this).attr("name");
     localStorage.removeItem(id);
-    localStorage.setItem(id, newQuantity);
+    if ((isNaN(newQuantity)) || (newQuantity === '')) {
+        newQuantity = 0;
+    }
+    localStorage.setItem(id, parseInt(newQuantity));
     loadPage(id);
 });
 
