@@ -20,12 +20,12 @@ function reloadPage(filter) {
                 arrayCategories = buildKV(arrayCategories, "All");
                 arrayCategories = buildKV(arrayCategories, article["categorie"]);
                 arrayBrand = buildKV(arrayBrand, article["brand"]);
+                var searchFilter = filterSearch(article["title"]);
                 if (filter !== 1) {
                     initBrand(article["brand"]);
+                    searchFilter=true;
                 }
                 arrayColor = buildKV(arrayColor, article["color"]);
-
-                var searchFilter = filterSearch(article["title"]);
                 var categoryFilter = filterCategorie(article["categorie"], article["sub_categorie"], arraySubCategories);
                 arraySubCategories = categoryFilter.subcat;
                 var subCategorieFilter = filterSubCategorie(article["sub_categorie"]);
