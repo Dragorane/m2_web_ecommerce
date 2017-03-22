@@ -20,7 +20,9 @@ function reloadPage(filter) {
                 arrayCategories = buildKV(arrayCategories, "All");
                 arrayCategories = buildKV(arrayCategories, article["categorie"]);
                 arrayBrand = buildKV(arrayBrand, article["brand"]);
-                initBrand(article["brand"]);
+                if (filter !== 1) {
+                    initBrand(article["brand"]);
+                }
                 arrayColor = buildKV(arrayColor, article["color"]);
 
                 var searchFilter = filterSearch(article["title"]);
@@ -54,8 +56,8 @@ function reloadPage(filter) {
     });
 }
 
-function initBrand(brand){
-    checkedBrand[brand]=1;
+function initBrand(brand) {
+    checkedBrand[brand] = 1;
 }
 
 function filterBrand(brand) {
@@ -146,12 +148,12 @@ function filterSubCategorie(subCategory) {
 function articleInCategorie(categorie) {
     localStorage.removeItem("subCategorieFilter");
     localStorage.setItem("categorieFilter", categorie);
-    reloadPage(null);
+    reloadPage(1);
 }
 
 function articleInSubCategorie(categorie) {
     localStorage.setItem("subCategorieFilter", categorie);
-    reloadPage(null);
+    reloadPage(1);
 }
 
 function searchBarController() {
@@ -163,7 +165,7 @@ function searchBarController() {
         localStorage.setItem("filter_search", search);
 
     }
-    reloadPage(null);
+    reloadPage(1);
 }
 
 function colorSelection(color) {
@@ -173,7 +175,7 @@ function colorSelection(color) {
     else {
         localStorage.setItem("colorFilter", color);
     }
-    reloadPage(null);
+    reloadPage(1);
 }
 
 function checkBrand(input) {
@@ -183,7 +185,7 @@ function checkBrand(input) {
     else {
         checkedBrand[input.name] = 0;
     }
-    reloadPage(null);
+    reloadPage(1);
 }
 
 /*Kvstore function*/
@@ -321,7 +323,7 @@ var priceSlider = $('#ex2').slider();
 priceSlider.on('slideStop', function(ev) {
     localStorage.setItem("priceFilterMin", priceSlider.data('slider').value[0]);
     localStorage.setItem("priceFilterMax", priceSlider.data('slider').value[1]);
-    reloadPage(null);
+    reloadPage(1);
 });
 
 reloadPage(null);

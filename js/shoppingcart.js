@@ -54,7 +54,7 @@ function loadPage(inputToFocus) {
 }
 
 
-$(document).on('change keypress', 'input', function() {
+$(document).on('change keyup', 'input', function() {
     var newQuantity = parseInt($(this).val());
     var id = $(this).attr("name");
     localStorage.removeItem(id);
