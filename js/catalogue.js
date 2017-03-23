@@ -21,14 +21,16 @@ function reloadPage(filter) {
                 arrayCategories = buildKV(arrayCategories, article["categorie"]);
                 arrayBrand = buildKV(arrayBrand, article["brand"]);
                 var searchFilter = filterSearch(article["title"]);
+                var categoryFilter = filterCategorie(article["categorie"], article["sub_categorie"], arraySubCategories);
+                var subCategorieFilter = filterSubCategorie(article["sub_categorie"]);
                 if (filter !== 1) {
                     initBrand(article["brand"]);
-                    searchFilter=true;
+                    searchFilter = true;
+                    categoryFilter.show = true;
+                    subCategorieFilter = true;
                 }
                 arrayColor = buildKV(arrayColor, article["color"]);
-                var categoryFilter = filterCategorie(article["categorie"], article["sub_categorie"], arraySubCategories);
                 arraySubCategories = categoryFilter.subcat;
-                var subCategorieFilter = filterSubCategorie(article["sub_categorie"]);
                 var colorFilter = filterColor(article["color"]);
                 var priceFilter = filterPrice(article["price"]);
                 var brandFilter = filterBrand(article["brand"]);
