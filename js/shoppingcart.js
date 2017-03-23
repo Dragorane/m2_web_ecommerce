@@ -23,11 +23,11 @@ function loadPage(inputToFocus) {
                     }
                     subTotal = articleQuantity * parseFloat(article["price"]);
                     tablehtml += "<tr>";
-                    tablehtml += "<th><img src='ressources/cart.png' class='img-article-sc'>" + article["title"] + "</th>";
-                    tablehtml += "<th>" + price + "</th>";
-                    tablehtml += "<th><form action='?page=shoppingcart' method='POST'><input type='text' name='" + article["id"] + "' value='" + articleQuantity + "'></input></form></th>";
-                    tablehtml += "<th>" + subTotal + "</th>";
-                    tablehtml += "<th><img src='ressources/cart-02.png' class='subimg-article-catalogue' onclick=\"removeArticleSC(" + article["id"] + ")\" /></th>";
+                    tablehtml += "<td><img src='ressources/cart.png' class='img-article-sc'><span class='titleArticleSc'>" + article["title"] + "</span></td>";
+                    tablehtml += "<td class='tocenter'><span class='SC-text-table'> $" + price + ".00</span></td>";
+                    tablehtml += "<td class='tocenter'><form action='?page=shoppingcart' method='POST'><input type='text' name='" + article["id"] + "' value='" + articleQuantity + "'></input></form></td>";
+                    tablehtml += "<td class='tocenter'><span class='SC-text-table'> $" + subTotal + ".00</span></th>";
+                    tablehtml += "<td class='tocenter'><img src='ressources/cart-02.png' class='img-del-article-SC' onclick=\"removeArticleSC(" + article["id"] + ")\" /></td>";
                     tablehtml += "</tr>\n";
                     total += subTotal;
                     cpt = cpt + 1;

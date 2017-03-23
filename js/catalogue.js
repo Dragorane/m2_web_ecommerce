@@ -15,7 +15,7 @@ function reloadPage(filter) {
             var htmlBrand = "";
             var arrayColor = {};
             var htmlColor = "";
-            var htmlCatalog = "<div class='row'>\n"; //catalogue : html
+            var htmlCatalog = "<div class='row newCatalogLine'>\n"; //catalogue : html
             for (let article of $data) {
                 arrayCategories = buildKV(arrayCategories, "All");
                 arrayCategories = buildKV(arrayCategories, article["categorie"]);
@@ -267,7 +267,7 @@ function printCategories(arrayCategories, arraySubCategories) {
 function buildArticle(catalogue, article, cpt) {
     if ((cpt % 3) == 0) {
         catalogue += "</div>\n"
-        catalogue += "<div class='row'>\n"
+        catalogue += "<div class='row newCatalogLine'>\n"
     }
     catalogue += "<div class='col-md-4'>\n";
     catalogue += "<div class='container-fluide'>\n";

@@ -51,12 +51,12 @@ body {
     float: left;
 }
 
-.active_color_selector{
+.active_color_selector {
     width: 10px;
     height: 10px;
     margin: 2px;
     float: left;
-    border : 2px solid grey;
+    border: 2px solid grey;
 }
 
 .red {
@@ -88,6 +88,10 @@ body {
 
 #header_catalogue {
     margin: 20px;
+}
+
+.newCatalogLine {
+    margin-bottom: 30px;
 }
 
 .img-top-catalogue {
@@ -211,7 +215,71 @@ label {
     font-weight: bolder;
 }
 
+
 /*Shopping cart*/
-.img-article-sc{
-    margin-right:10px !important; 
+
+.img-article-sc {
+    margin-right: 10px !important;
+}
+
+#shoppingCartTable table th {
+    border: 1px solid grey;
+    text-align: center;
+}
+
+#shoppingCartTable table {
+    border: 1px solid grey;
+}
+
+#shoppingCartTable table td {
+    border-bottom: 0px;
+}
+
+#shoppingCartTable table td {
+    border-top: 0px;
+    border-right: 1px solid grey;
+    border-left: 1px solid grey;
+}
+
+#shoppingCartTable table td.tocenter {
+    display: table-cell;
+    font-weight: bold;
+    vertical-align: middle !important;
+}
+
+#shoppingCartTable table td.tocenter span {
+    height: 35px;
+}
+
+#shoppingCartTable input {
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 10%;
+    width: 50px;
+    text-align: center;
+    display: block;
+    vertical-align: middle !important;
+}
+
+.img-del-article-SC {
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 15%;
+    text-align: center;
+    display: block;
+    vertical-align: middle !important;
+}
+
+.SC-text-table {
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 15%;
+    text-align: center;
+    display: block;
+    vertical-align: middle !important;
+}
+
+.titleArticleSc {
+    font-weight: bold;
+    color: #0099ff;
 }
