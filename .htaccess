@@ -1,4 +1,4 @@
 RewriteEngine on
 RewriteCond %{REQUEST_URI} !js$
 RewriteCond %{REQUEST_URI} !json$
-RewriteRule ^(.*)$ src/index.php?path=$1 [NC,L,QSA]
+RewriteRule ^(.*)$ src/index.php [NC,L,QSA]
