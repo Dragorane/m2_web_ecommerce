@@ -1,4 +1,4 @@
-function loadPage(inputToFocus) {
+function reloadPage(inputToFocus) {
     $.ajax({
         url: "js/product.json",
         type: 'GET',
@@ -21,9 +21,9 @@ function loadPage(inputToFocus) {
                         var promo = price * parseFloat(article["promo"]) / 100
                         var price = price - parseFloat(promo);
                     }
-                    subTotal = articleQuantity * parseFloat(article["price"]);
+                    subTotal = articleQuantity * parseFloat(price);
                     tablehtml += "<tr>";
-                    tablehtml += "<td><img src='ressources/cart.png' class='img-article-sc'><span class='titleArticleSc'>" + article["title"] + "</span></td>";
+                    tablehtml += "<td><img src='" + article["image_min"] + "' class='img-article-sc'><span class='titleArticleSc'>" + article["title"] + "</span></td>";
                     tablehtml += "<td class='tocenter'><span class='SC-text-table'> $" + price + ".00</span></td>";
                     tablehtml += "<td class='tocenter'><form action='?page=shoppingcart' method='POST'><input type='text' name='" + article["id"] + "' value='" + articleQuantity + "'></input></form></td>";
                     tablehtml += "<td class='tocenter'><span class='SC-text-table'> $" + subTotal + ".00</span></th>";
@@ -56,19 +56,19 @@ function loadPage(inputToFocus) {
 
 $(document).on('change keyup', 'input', function() {
     var newQuantity = $(this).val();
-    console.log("catched : "+newQuantity)
+    console.log("catched : " + newQuantity)
     var id = $(this).attr("name");
     localStorage.removeItem(id);
     if ((isNaN(newQuantity)) || (newQuantity === '')) {
         newQuantity = 0;
     }
     localStorage.setItem(id, parseInt(newQuantity));
-    loadPage(id);
+    reloadPage(id);
 });
 
 function removeArticleSC(id) {
     localStorage.removeItem(id);
-    loadPage(null);
+    reloadPage(null);
 }
 
-loadPage(null);
+reloadPage(null);

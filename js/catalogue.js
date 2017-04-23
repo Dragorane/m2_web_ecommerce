@@ -281,7 +281,7 @@ function buildArticle(catalogue, article, cpt) {
     if (article["age"] == "new") {
         catalogue += "<img class='img-article-promo' src='ressources/img-10.png'/>\n"
     }
-    catalogue += "<img class='img-article-catalogue' src='ressources/img-08.png'/>\n";
+    catalogue += "<img class='img-article-catalogue' src='" + article["image"] + "'/>\n";
     catalogue += "</div>\n";
     catalogue += "</div>\n";
     catalogue += "<a href='#'><span class='article_title'>" + article["title"] + "</span></a><br/>\n";
