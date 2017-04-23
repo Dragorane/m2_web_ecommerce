@@ -1,45 +1,50 @@
-var checkedBrand = {}; //global var to brand filter
+var checkedBrand = {}; //global var for brand filter
 
+//main function to full reload the interface
+//@param filter : if filter==1 then remove filter (example : first loading of interface)
 function reloadPage(filter) {
+    //Get our data
     $.ajax({
         url: "js/product.json",
         type: 'GET',
         dataType: 'json',
         success: function(json) {
-            var $data = json; //content of our json products
-            var cpt = 0; //counting our articles
-            var arrayCategories = {}; //array to stock categorie
-            var htmlCategories = ""; //var to stock html code for categorie
-            var arraySubCategories = {};
-            var arrayBrand = {};
-            var htmlBrand = "";
-            var arrayColor = {};
-            var htmlColor = "";
-            var htmlCatalog = "<div class='row newCatalogLine'>\n"; //catalogue : html
+            var $data = json;           //content of our json products
+            var cpt = 0;                //counting our articles
+            var arrayCategories = {};   //array to stock categorie's data
+            var arraySubCategories = {};//array to stock subcategorie's data
+            var htmlCategories = "";    //var to stock html code for categorie and subcategorie
+            var arrayBrand = {};        //array to stock brand's data
+            var htmlBrand = "";         //array to stock brand's html
+            var arrayColor = {};        //array to stock color's data
+            var htmlColor = "";         //array to stock color's html
+            var htmlCatalog = "<div class='row newCatalogLine'>\n";                     //variable to stock catalogue's html
             for (let article of $data) {
-                arrayCategories = buildKV(arrayCategories, "All");
-                arrayCategories = buildKV(arrayCategories, article["categorie"]);
-                arrayBrand = buildKV(arrayBrand, article["brand"]);
-                var searchFilter = filterSearch(article["title"]);
-                var categoryFilter = filterCategorie(article["categorie"], article["sub_categorie"], arraySubCategories);
-                var subCategorieFilter = filterSubCategorie(article["sub_categorie"]);
-                if (filter !== 1) {
+                arrayCategories = buildKV(arrayCategories, "All");                      //add "all" at the top of our categorie
+                arrayCategories = buildKV(arrayCategories, article["categorie"]);       //add each categorie in our array
+                arrayBrand = buildKV(arrayBrand, article["brand"]);                     //add each brand in our array
+                arrayColor = buildKV(arrayColor, article["color"]);                     //add each color in our array
+                var searchFilter = filterSearch(article["title"]);                      //apply search filter
+                var categoryFilter = filterCategorie(article["categorie"], article["sub_categorie"], arraySubCategories); //apply categorie filter
+                var subCategorieFilter = filterSubCategorie(article["sub_categorie"]);  //apply subcategorie filter
+                if (filter !== 1) {     //remove every filter if user doesn't use them
                     initBrand(article["brand"]);
                     searchFilter = true;
                     categoryFilter.show = true;
                     subCategorieFilter = true;
                 }
-                arrayColor = buildKV(arrayColor, article["color"]);
-                arraySubCategories = categoryFilter.subcat;
-                var colorFilter = filterColor(article["color"]);
-                var priceFilter = filterPrice(article["price"]);
-                var brandFilter = filterBrand(article["brand"]);
+                arraySubCategories = categoryFilter.subcat;                             //get subcategories's array
+                var colorFilter = filterColor(article["color"]);                        //apply filter color
+                var priceFilter = filterPrice(article["price"]);                        //apply price filter
+                var brandFilter = filterBrand(article["brand"]);                        //apply brand filter
+                //chekc the boolean return of each filter, if everyone is true : print the article.
                 if (brandFilter === true && colorFilter === true && priceFilter === true & searchFilter === true && categoryFilter.show === true && subCategorieFilter === true) {
-                    htmlCatalog = buildArticle(htmlCatalog, article, cpt);
+                    htmlCatalog = buildArticle(htmlCatalog, article, cpt);              //add article inside our catalogue
                     cpt = cpt + 1;
                 }
             }
             htmlCatalog += "</div>\n";
+            //Print each element in our interface
             htmlCategories = printCategories(arrayCategories, arraySubCategories);
             htmlBrand = printBrand(arrayBrand);
             htmlColor = printColor(arrayColor);
@@ -48,6 +53,7 @@ function reloadPage(filter) {
             $("#categoriesSelection").html(htmlCategories);
             $("#brandSelection").html(htmlBrand);
             $("#colorSelection").html(htmlColor);
+            //actualize countor of article in shopping cart
             if (localStorage.getItem("itemInSc") === null) {
                 $("#itemInSC").html("0");
             }
