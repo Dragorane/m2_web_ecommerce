@@ -198,6 +198,10 @@ function checkBrand(input) {
 
 /*Kvstore function*/
 
+//function to build a kvstore from a js array
+//@param array : our kvstore
+//@param key : our kvstore's key
+//@return array : our kvstore with new value.
 function buildKV(array, key) {
     if (typeof array[key] === 'undefined') {
         array[key] = 1;
@@ -208,7 +212,11 @@ function buildKV(array, key) {
     return array;
 }
 
-/*HTML generator functions*/
+/*======= HTML generator functions ========*/
+
+//function printColor : use to print color filter (htmlbuilder)
+//@param arrayColor :  color's array data
+//@return htmlColor : variable which contain color's html
 function printColor(arrayColor) {
     var htmlColor = "";
     for (var key in arrayColor) {
@@ -223,12 +231,14 @@ function printColor(arrayColor) {
     return htmlColor;
 }
 
+//function printBrand : use to print brand filter (htmlbuilder)
+//@param arrayBrand : brand's array data
+//@return htmlBrand : variable which contain brand's html
 function printBrand(arrayBrand) {
     var htmlBrand = "<form><div class='checkbox'>";
     for (var key in arrayBrand) {
         let value = arrayBrand[key];
         htmlBrand += "<label>";
-        console.log(checkedBrand[key]);
         if (checkedBrand[key] === 1) {
             htmlBrand += "<input type='checkbox' name='" + key + "' onclick='checkBrand(this)' checked='checked'>" + key + " (" + value + ")";
         }
@@ -241,6 +251,10 @@ function printBrand(arrayBrand) {
     return htmlBrand;
 }
 
+//function printCategories : use to print categorie and subcategorie filter (htmlbuilder)
+//@param arrayCategories : categories's data array
+//@param arraySubCategories : subcategories's data array
+//@return htmlCategories : variable which contain categories's html
 function printCategories(arrayCategories, arraySubCategories) {
     var htmlCategories = "<ul class='list-unstyled'>";
     for (var key in arrayCategories) {
@@ -272,6 +286,11 @@ function printCategories(arrayCategories, arraySubCategories) {
     return htmlCategories;
 }
 
+//function buildArticle : use to print an article on our interface
+//@param catalogue : html's catalogue
+//@param article : article's data
+//@param cpt : article's number, use to begin a new line
+//@return : catalogue's html variable
 function buildArticle(catalogue, article, cpt) {
     if ((cpt % 3) == 0) {
         catalogue += "</div>\n"
@@ -309,6 +328,9 @@ function buildArticle(catalogue, article, cpt) {
     return catalogue;
 }
 
+//funcion : addArticleToSC for adding a new article into user's shopping cart
+//@param : id : selected article's id
+//@param : quantity : article's quantity added in user's shopping cart
 function addArticleToSC(id, quantity) {
     var newquantity = 0;
     if (localStorage.getItem(id) === null) {
@@ -325,9 +347,9 @@ function addArticleToSC(id, quantity) {
     document.location.href = "?page=shoppingcart"
 }
 
-/*Slider eventListner*/
+//slider declaration for price filter
 var priceSlider = $('#ex2').slider();
-
+/*Slider eventListner : actualise price's filter parameter*/
 priceSlider.on('slideStop', function(ev) {
     localStorage.setItem("priceFilterMin", priceSlider.data('slider').value[0]);
     localStorage.setItem("priceFilterMax", priceSlider.data('slider').value[1]);
