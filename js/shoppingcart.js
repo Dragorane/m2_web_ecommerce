@@ -1,18 +1,22 @@
+//main function to full reload the interface
+//@param inputToFocus : id of the element to apply focus after reloading
 function reloadPage(inputToFocus) {
+    //Get our data
     $.ajax({
         url: "js/product.json",
         type: 'GET',
         dataType: 'json',
+        //load the page
         success: function(json) {
             var $data = json; //content of our json products
-            var cpt = 0; //counting our articles
-            var tablehtml = "<table class='table'>\n"; //catalogue : html
-            tablehtml += "<tr><th>Item Name</th><th>Price</th><th>Quantity</th><th>SubTotal</th><th></th></tr>\n";
+            var cpt = 0; //number of our articles
             var articleQuantity = 0;
             var total = 0;
             var price = 0;
             var subTotal = 0;
-            var newProductDiv = "";
+            var newProductDiv = ""; // contain html code for "#newProductAdded"'s div
+            var tablehtml = "<table class='table'>\n"; //tablehtml : will contain html code to print our table
+            tablehtml += "<tr><th>Item Name</th><th>Price</th><th>Quantity</th><th>SubTotal</th><th></th></tr>\n";
             for (let article of $data) {
                 if (localStorage.getItem(article["id"]) !== null) {
                     articleQuantity = parseInt(localStorage.getItem(article["id"]));
@@ -38,25 +42,26 @@ function reloadPage(inputToFocus) {
                 }
             }
             tablehtml += "</table>\n";
+            
+            //Table ready to print, Initialization of interface begin
             $("#newProductAdded").html(newProductDiv);
             $("#shoppingCartTable").html(tablehtml);
             localStorage.setItem("itemInSc", cpt);
             $("#itemInSC").html(cpt);
             $("#grandTotal").html("$" + total);
             $("#subTotal").html("$" + total);
+            //Focus our input if needed
             if (inputToFocus !== null) {
-                var InputValue = $("input[name=" + inputToFocus + "]").val(); //store the value of the element
-                console.log(InputValue);
+                var InputValue = $("input[name=" + inputToFocus + "]").val();
                 $("input[name=" + inputToFocus + "]").focus().val(InputValue);;
             }
         }
     });
 }
 
-
+//Eventlister to watch our input changing
 $(document).on('change keyup', 'input', function() {
     var newQuantity = $(this).val();
-    console.log("catched : " + newQuantity)
     var id = $(this).attr("name");
     localStorage.removeItem(id);
     if ((isNaN(newQuantity)) || (newQuantity === '')) {
@@ -66,9 +71,11 @@ $(document).on('change keyup', 'input', function() {
     reloadPage(id);
 });
 
+//function removeArticleSC : function to remove an article if user clic on the cross
 function removeArticleSC(id) {
     localStorage.removeItem(id);
     reloadPage(null);
 }
 
+//first load of our page
 reloadPage(null);
