@@ -11,7 +11,7 @@ class Page {
     {
         require("view/header.html");
         echo "<div class='row'>";
-        echo "<p>Home > Design</p>";
+        echo "<p><a href='/'>Home</a> > Design</p>";
         echo "<h1>Design</h1>";
         echo "</div>";
         echo "<div class='row'>";
@@ -29,7 +29,7 @@ class Page {
     public function shoppingCartPage(){
         require("view/header.html");
         echo "<div class='row'>";
-        echo "<p>Home > Shopping Cart</p>";
+        echo "<p><a href='/'>Home</a> > Shopping Cart</p>";
         echo "<h1>Shopping Cart</h1>";
         echo "</div>";
         echo "<div id=\"newProductAdded\" class='row'>";
