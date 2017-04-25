@@ -64,19 +64,28 @@ function reloadPage(filter) {
     });
 }
 
+//function to init brand's filter by checked
+//@param brand : brand which have to be checked
 function initBrand(brand) {
     checkedBrand[brand] = 1;
 }
 
+/*===== filter checker function====*/
+
+//function to check if article's brand is part of our brand filter
+//@param brand : current article's brand
+//@return : true if article can be show, false else
 function filterBrand(brand) {
     var showArticle = false;
     if ((checkedBrand[brand] === 1) || checkedBrand[brand] === "undefined") {
         showArticle = true;
     }
     return showArticle;
-
 }
 
+//function to check if article's color is part of our color filter
+//@param color : current article's color
+//@return : true if article can be show, false else
 function filterColor(color) {
     var showArticle = false;
     if ((localStorage.getItem("colorFilter") === "undefined") || (localStorage.getItem("colorFilter") === null)) {
@@ -91,6 +100,9 @@ function filterColor(color) {
 
 }
 
+//function to check if article's price is part of our price filter
+//@param price : current article's price
+//@return : true if article can be show, false else
 function filterPrice(price) {
     var showArticle = false;
     var min = localStorage.getItem("priceFilterMin");
@@ -106,7 +118,9 @@ function filterPrice(price) {
     return showArticle;
 }
 
-
+//function to check if article's title is part of our search filter
+//@param title : current article's title
+//@return : true if article can be show, false else
 function filterSearch(title) {
     var showArticle = false;
     if ((localStorage.getItem("filter_search") === "undefined") || (localStorage.getItem("filter_search") === null)) {
@@ -120,6 +134,9 @@ function filterSearch(title) {
     return showArticle;
 }
 
+//function to check if article's categorie is part of our categorie filter
+//@param categorie : current article's categorie
+//@return : true if article can be show, false else
 function filterCategorie(categorie, subCategorie, arraySubCategories) {
     var showArticle = false;
     if (localStorage.getItem("categorieFilter") === "undefined") {
@@ -138,6 +155,9 @@ function filterCategorie(categorie, subCategorie, arraySubCategories) {
     };
 }
 
+//function to check if article's subcategorie is part of our subcategorie filter
+//@param subcategorie : current article's subcategorie
+//@return : true if article can be show, false else
 function filterSubCategorie(subCategory) {
     var showArticle = false;
     if ((localStorage.getItem("subCategorieFilter") === "undefined") || (localStorage.getItem("subCategorieFilter") === null)) {
@@ -151,19 +171,24 @@ function filterSubCategorie(subCategory) {
     return showArticle;
 }
 
-/*Catalog's filter function*/
+/*===== filter selection function====*/
 
+//function to add selected categorie in localStorage
+//@param categorie : selected categorie
 function articleInCategorie(categorie) {
     localStorage.removeItem("subCategorieFilter");
     localStorage.setItem("categorieFilter", categorie);
     reloadPage(1);
 }
 
-function articleInSubCategorie(categorie) {
-    localStorage.setItem("subCategorieFilter", categorie);
+//function to add selected subcategorie in localStorage
+//@param subcategorie : selected subcategorie
+function articleInSubCategorie(subcategorie) {
+    localStorage.setItem("subCategorieFilter", subcategorie);
     reloadPage(1);
 }
 
+//function to add user's input in localStorage (searchbar filter)
 function searchBarController() {
     var search = $("#searchBarCatalog").val();
     if (search === "") {
@@ -176,6 +201,8 @@ function searchBarController() {
     reloadPage(1);
 }
 
+//function to add selected color in localStorage
+//@param color : selected color
 function colorSelection(color) {
     if (color === localStorage.getItem("colorFilter")) {
         localStorage.removeItem("colorFilter");
@@ -186,6 +213,8 @@ function colorSelection(color) {
     reloadPage(1);
 }
 
+//function to actualize checkedBrand's array according to user's input (brand filter)
+//@param input : selected brand
 function checkBrand(input) {
     if (input.checked) {
         checkedBrand[input.name] = 1;
@@ -196,7 +225,7 @@ function checkBrand(input) {
     reloadPage(1);
 }
 
-/*Kvstore function*/
+/*======= Kvstore function =======*/
 
 //function to build a kvstore from a js array
 //@param array : our kvstore
